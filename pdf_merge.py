@@ -1,21 +1,59 @@
 import os
 from PyPDF2 import PdfMerger, PdfReader
 
-def get_page_sizes(pdf_path):
+class FileList:
+    def __init__(self, directory):
+        # ディレクトリを設定
+        self.directory = directory
+
+    def get_file_by_name(self, keyword):
+        # キーワードを含むファイルを取得
+        files = [file for file in os.listdir(self.directory) if keyword in file]
+        return sorted(files)
+    
+    def get_file_by_extension(self, extension):
+        # 指定の拡張子のファイルを取得
+        files = [file for file in os.listdir(self.directory) if file.endswith(extension)]
+        return sorted(files)
+
+def get_page_sizes(directory, file_name):
+    # ページサイズを格納するリストを初期化
     sizes = []
+    # ファイルパスを生成
+    pdf_path = os.path.join(directory, file_name)
+    # PDFファイルをバイナリモードで開く
     with open(pdf_path, 'rb') as file:
-        reader = PdfReader(file)
+        reader = PdfReader(file)  # PDFリーダーを作成
+        # 各ページについて処理
         for page_num in range(len(reader.pages)):
-            page = reader.pages[page_num]
-            sizes.append((page.mediabox[2] - page.mediabox[0],
-                          page.mediabox[3] - page.mediabox[1]))
+            page = reader.pages[page_num]   # ページを取得
+            sizes.append((page.mediabox[2] - page.mediabox[0], page.mediabox[3] - page.mediabox[1])) # ページのサイズを取得してリストに追加
+    # 全てのページのサイズを返す
     return sizes
+
+def delete_merged_files(directory, files):
+    # ファイルを削除
+    if not files:
+        print("No merged files found.")
+    else:
+        for file in files:
+            os.remove(os.path.join(directory, file))
+        print("Merged files deleted successfully!")
 
 def merge_pdfs():
     # 現在のディレクトリを取得
-    current_dir = os.getcwd()
+    work_dir = os.getcwd()
+
+    # ファイルリストのインスタンスを作成
+    file_manager = FileList(work_dir)
+    # "merged_"が含まれるファイル名を取得
+    files_delete = file_manager.get_file_by_name("merged_")
+
+    # 結合済みファイルを削除
+    delete_merged_files(work_dir, files_delete)
+
     # ファイル名のリストを取得
-    files = sorted([file for file in os.listdir(current_dir) if file.endswith('.pdf')])
+    files = file_manager.get_file_by_extension(".pdf")
     
     merger_a0 = PdfMerger()
     merger_a1 = PdfMerger()
@@ -25,7 +63,7 @@ def merge_pdfs():
     
     # ファイルをサイズごとに分類してマージ
     for file_name in files:
-        sizes = get_page_sizes(file_name)
+        sizes = get_page_sizes(work_dir, file_name)
         for size in sizes:
             if size[0] >= 1682 and size[1] >= 2378:  # A0
                 merger_a0.append(file_name)
@@ -45,15 +83,15 @@ def merge_pdfs():
         
     # 出力ファイル名を指定してマージ結果を保存
     if merger_a0.pages:
-        merger_a0.write('merged_A0.pdf')
+        merger_a0.write(os.path.join(work_dir, 'merged_A0.pdf'))
     if merger_a1.pages:
-        merger_a1.write('merged_A1.pdf')
+        merger_a1.write(os.path.join(work_dir, 'merged_A1.pdf'))
     if merger_a2.pages:
-        merger_a2.write('merged_A2.pdf')
+        merger_a2.write(os.path.join(work_dir, 'merged_A2.pdf'))
     if merger_a3.pages:
-        merger_a3.write('merged_A3.pdf')
+        merger_a3.write(os.path.join(work_dir, 'merged_A3.pdf'))
     if merger_a4.pages:
-        merger_a4.write('merged_A4.pdf')
+        merger_a4.write(os.path.join(work_dir, 'merged_A4.pdf'))
     
     print("PDF files merged successfully!")
 
