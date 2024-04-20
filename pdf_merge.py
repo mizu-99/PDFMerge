@@ -17,10 +17,6 @@ def merge_pdfs():
     # ファイル名のリストを取得
     files = sorted([file for file in os.listdir(current_dir) if file.endswith('.pdf')])
     
-    # 結合されたファイルを追跡するためのセットを初期化
-    merged_files = set()
-    
-    # サイズごとのPDFマージャーを初期化
     merger_a0 = PdfMerger()
     merger_a1 = PdfMerger()
     merger_a2 = PdfMerger()
@@ -29,26 +25,24 @@ def merge_pdfs():
     
     # ファイルをサイズごとに分類してマージ
     for file_name in files:
-        # すでに結合されたファイルの場合、スキップする
-        if file_name in merged_files:
-            continue
-        
         sizes = get_page_sizes(file_name)
         for size in sizes:
             if size[0] >= 1682 and size[1] >= 2378:  # A0
                 merger_a0.append(file_name)
+                break   # ページ数だけ重複結合されるのを防ぐためブレイク
             elif size[0] >= 1189 and size[1] >= 1682:  # A1
                 merger_a1.append(file_name)
+                break   # ページ数だけ重複結合されるのを防ぐためブレイク
             elif size[0] >= 841 and size[1] >= 1189:  # A2
                 merger_a2.append(file_name)
+                break   # ページ数だけ重複結合されるのを防ぐためブレイク
             elif size[0] >= 594 and size[1] >= 841:  # A3
                 merger_a3.append(file_name)
+                break   # ページ数だけ重複結合されるのを防ぐためブレイク
             else:  # A4以下
                 merger_a4.append(file_name)
+                break   # ページ数だけ重複結合されるのを防ぐためブレイク
         
-        # 結合されたファイルとして追跡
-        merged_files.add(file_name)
-    
     # 出力ファイル名を指定してマージ結果を保存
     if merger_a0.pages:
         merger_a0.write('merged_A0.pdf')
