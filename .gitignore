@@ -1,3 +1,4 @@
 # 無視するディレクトリ
 venv/
 /__pycache__/
+temp/
