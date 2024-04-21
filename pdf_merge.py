@@ -1,5 +1,24 @@
 import os
 from PyPDF2 import PdfMerger, PdfReader
+import platform
+from kivy.app import App
+from kivy.uix.boxlayout import BoxLayout
+from kivy.lang import Builder
+from kivy.core.window import Window
+from kivy.config import Config
+from kivy.core.text import LabelBase, DEFAULT_FONT  # フォント指定
+from kivy.resources import resource_add_path        # フォント指定
+
+if platform.system() == 'Linux':
+    resource_add_path("/usr/share/fonts/opentype/noto/")
+    LabelBase.register(DEFAULT_FONT, "NotoSansCJK-Regular.ttc")
+# For Windows
+else:
+    resource_add_path("C:\Windows\Fonts")
+    LabelBase.register(DEFAULT_FONT, "meiryo.ttc")
+
+TITLE = 'PDFMerge'
+VERSION = '0.2.0'
 
 class FileList:
     def __init__(self, directory):
@@ -40,9 +59,12 @@ def delete_merged_files(directory, files):
             os.remove(os.path.join(directory, file))
         print("Merged files deleted successfully!")
 
-def merge_pdfs():
+def convert_mm_to_pt(mm):
+    return round(mm / 25.4 * 72.1, 1)
+
+def merge_pdfs(directory, merge_status):
     # 現在のディレクトリを取得
-    work_dir = os.getcwd()
+    work_dir = directory
 
     # ファイルリストのインスタンスを作成
     file_manager = FileList(work_dir)
@@ -55,14 +77,6 @@ def merge_pdfs():
     # ファイル名のリストを取得
     files = file_manager.get_file_by_extension(".pdf")
     
-    # ユーザーからの入力を受け取る
-    while True:
-        user_input = input("横向きと縦向きのPDFを別々に結合しますか? (y/n): ").strip().lower()
-        if user_input == 'y' or user_input == 'n':
-            break
-        else:
-            print("無効な入力です。'y'もしくは'n'を入力してください。")
-
     pdf_size = {
         'a0' : {'long' : 1189, 'short' : 841},
         'a1' : {'long' :  841, 'short' : 594},
@@ -71,17 +85,11 @@ def merge_pdfs():
         'a4' : {'long' :  297, 'short' : 210}
     }
 
-    pdf_size_pt = {
-        'a0' : {'long' : round(pdf_size['a0']['long'] / 25.4 * 72, 0), 'short' : round(pdf_size['a0']['short'] / 25.4 * 72, 1)},
-        'a1' : {'long' : round(pdf_size['a1']['long'] / 25.4 * 72, 0), 'short' : round(pdf_size['a1']['short'] / 25.4 * 72, 1)},
-        'a2' : {'long' : round(pdf_size['a2']['long'] / 25.4 * 72, 0), 'short' : round(pdf_size['a2']['short'] / 25.4 * 72, 1)},
-        'a3' : {'long' : round(pdf_size['a3']['long'] / 25.4 * 72, 0), 'short' : round(pdf_size['a3']['short'] / 25.4 * 72, 1)},
-        'a4' : {'long' : round(pdf_size['a4']['long'] / 25.4 * 72, 0), 'short' : round(pdf_size['a4']['short'] / 25.4 * 72, 1)}
-    }
+    pdf_size_pt = {size: {'long': convert_mm_to_pt(data['long']), 'short': convert_mm_to_pt(data['short'])} for size, data in pdf_size.items()}
 
     threshold = 0.9
 
-    if user_input == 'y':
+    if merge_status == True:
         merger_a0_h = PdfMerger()
         merger_a0_v = PdfMerger()
         merger_a1_h = PdfMerger()
@@ -197,5 +205,49 @@ def merge_pdfs():
     
     print("PDF files merged successfully!")
 
+class MyBoxLayout(BoxLayout):
+    def submit_pressed(self):
+        input_text = self.ids.input_folder_path.text
+        print("FOLDER PATH:", input_text)
+
+    def merge_pressed(self):
+        work_dir             = self.ids.input_folder_path.text
+        check_separate_vh    = self.ids.check_separate_vh.active
+        check_no_separate_vh = self.ids.check_no_separate_vh.active
+
+        if check_separate_vh == True and check_no_separate_vh == False:
+            merge_status = True
+        elif check_separate_vh == False and check_no_separate_vh == True:
+            merge_status = False
+        else:
+            self.ids.check_separate_vh.active = True # Treuのチェックボックスが0のときは初期状態に設定
+            merge_status = True
+
+        if work_dir:
+            merge_pdfs(work_dir, merge_status)
+        else:
+            pass
+
+class MyApp(App):
+    title = '{} v{}'.format(TITLE, VERSION)
+    # kvファイルの読み込み
+    Builder.load_file('style.kv')
+
+    # windowサイズの指定
+    window_width  = 700
+    window_height = 100
+    Window.size   = (window_width, window_height)
+
+    # 指定のサイズ以下へのウィンドウのサイズ変更を不可にする
+    Window.minimum_width  = window_width
+    Window.minimum_height = window_height
+
+    # guiの振舞いの設定
+    Config.set('input', 'mouse', 'mouse,disable_multitouch')  # 右クリック赤丸消去
+    Config.set('kivy', 'exit_on_escape', '0')  # kivy ESC無効
+
+    def build(self):
+        return MyBoxLayout()
+
 if __name__ == "__main__":
-    merge_pdfs()
+    MyApp().run()
