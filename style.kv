@@ -1,0 +1,73 @@
+# <Root>:
+#     BoxLayout:
+#         orientation: 'vertical'
+
+#         BoxLayout:
+#             orientation: 'horizontal'
+#             padding: 10
+
+#             TextInput:
+#                 id: textinput_search_no
+#                 font_size: '16sp'
+#                 hint_text: 'Type here'
+#                 size_hint: 0.89, 1
+
+#             Label:
+#                 id: label_dummy
+#                 size_hint: 0.01, 1
+
+#             Button:
+#                 id: buttono_01
+#                 text: 'Copy'
+#                 size_hint: 0.1, 1
+
+#:import C kivy.utils.get_color_from_hex
+
+<MyBoxLayout>:
+    canvas.before:
+        Color:
+            rgba : C('#29506D')
+        Rectangle:
+            pos  : self.pos
+            size : self.size
+
+    BoxLayout:
+        orientation:'vertical'
+        spacing: 10
+        padding: 10
+
+        TextInput:
+            id          : input_folder_path 
+            font_size   : '16sp'
+            multiline   : 'False'
+            hint_text   : 'FOLDER PATH'
+            size_hint_x : 1
+
+        BoxLayout:
+            orientation:'horizontal'
+            Label:
+                id:label_separate_vh
+                text : '用紙の縦・横を分けて結合'
+                size_hint_x : 0.3
+            CheckBox:
+                id:check_separate_vh
+                group: 'marge'
+                active : True
+                size_hint_x : 0.1
+
+            Label:
+                id:label_separate_vh
+                text : '用紙の縦・横を分けないで結合'
+                size_hint_x : 0.3
+            CheckBox:
+                id:check_no_separate_vh
+                group: 'marge'
+                size_hint_x : 0.1
+
+
+            Button:
+                text: 'Merge'
+                size_hint_x: 0.2
+                # on_press: root.submit_pressed()
+                on_press: root.merge_pressed()
+
