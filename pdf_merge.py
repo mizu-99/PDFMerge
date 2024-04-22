@@ -1,6 +1,5 @@
 import os
 from pypdf import PdfMerger, PdfReader
-from pypdf import PdfMerger, PdfReader
 import platform
 from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
