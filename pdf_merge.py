@@ -103,37 +103,38 @@ def merge_pdfs(directory, merge_status):
 
         for file_name in files:
             sizes = get_page_sizes(work_dir, file_name)
+            file_path = os.path.join(work_dir, file_name)
             for size in sizes:
                 # A0 横
                 if (size[0] >= pdf_size_pt['a0']['long'] * threshold) and (size[1] >= pdf_size_pt['a0']['short'] * threshold):
-                    merger_a0_h.append(file_name)
+                    merger_a0_h.append(file_path)
                 # A1 縦
                 elif (size[0] >= pdf_size_pt['a0']['short'] * threshold) and (size[1] >= pdf_size_pt['a0']['long'] * threshold):
-                    merger_a0_v.append(file_name)
+                    merger_a0_v.append(file_path)
                 # A1 横
                 elif (size[0] >= pdf_size_pt['a1']['long'] * threshold) and (size[1] >= pdf_size_pt['a1']['short'] * threshold):
-                    merger_a1_h.append(file_name)
+                    merger_a1_h.append(file_path)
                 # A1 縦
                 elif (size[0] >= pdf_size_pt['a1']['short'] * threshold) and (size[1] >= pdf_size_pt['a1']['long'] * threshold):
-                    merger_a1_v.append(file_name)
+                    merger_a1_v.append(file_path)
                 # A2 横
                 elif (size[0] >= pdf_size_pt['a2']['long'] * threshold) and (size[1] >= pdf_size_pt['a2']['short'] * threshold):
-                    merger_a2_h.append(file_name)
+                    merger_a2_h.append(file_path)
                 # A2 縦
                 elif (size[0] >= pdf_size_pt['a2']['short'] * threshold) and (size[1] >= pdf_size_pt['a2']['long'] * threshold):
-                    merger_a2_v.append(file_name)
+                    merger_a2_v.append(file_path)
                 # A3 横
                 elif (size[0] >= pdf_size_pt['a3']['long'] * threshold) and (size[1] >= pdf_size_pt['a3']['short'] * threshold):
-                    merger_a3_h.append(file_name)
+                    merger_a3_h.append(file_path)
                 # A3 縦
                 elif (size[0] >= pdf_size_pt['a3']['short'] * threshold) and (size[1] >= pdf_size_pt['a3']['long'] * threshold):
-                    merger_a3_v.append(file_name)
+                    merger_a3_v.append(file_path)
                 # A4 横
                 elif (size[0] >= pdf_size_pt['a4']['long'] * threshold) and (size[1] >= pdf_size_pt['a4']['short'] * threshold):
-                    merger_a4_h.append(file_name)
+                    merger_a4_h.append(file_path)
                 # A4 縦
                 elif (size[0] >= pdf_size_pt['a4']['short'] * threshold) and (size[1] >= pdf_size_pt['a4']['long'] * threshold):
-                    merger_a4_v.append(file_name)
+                    merger_a4_v.append(file_path)
                 else:
                     pass
 
@@ -170,22 +171,23 @@ def merge_pdfs(directory, merge_status):
 
         for file_name in files:
             sizes = get_page_sizes(work_dir, file_name)
+            file_path = os.path.join(work_dir, file_name)
             for size in sizes:
                 # A0
                 if (size[0] * size[1]) >= (pdf_size_pt['a0']['long'] * pdf_size_pt['a0']['short'] * threshold):
-                    merger_a0.append(file_name)
+                    merger_a0.append(file_path)
                 # A1
                 elif (size[0] * size[1]) >= (pdf_size_pt['a1']['long'] * pdf_size_pt['a1']['short'] * threshold):
-                    merger_a1.append(file_name)
+                    merger_a1.append(file_path)
                 # A2
                 elif (size[0] * size[1]) >= (pdf_size_pt['a2']['long'] * pdf_size_pt['a2']['short'] * threshold):
-                    merger_a2.append(file_name)
+                    merger_a2.append(file_path)
                 # A3
                 elif (size[0] * size[1]) >= (pdf_size_pt['a3']['long'] * pdf_size_pt['a3']['short'] * threshold):
-                    merger_a3.append(file_name)
+                    merger_a3.append(file_path)
                 # A4
                 elif (size[0] * size[1]) >= (pdf_size_pt['a4']['long'] * pdf_size_pt['a4']['short'] * threshold):
-                    merger_a4.append(file_name)
+                    merger_a4.append(file_path)
                 else:
                     pass
                 
