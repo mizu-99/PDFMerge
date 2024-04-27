@@ -24,7 +24,7 @@ $$
 |   A3    |       297 $\times$ 420       |      842 $\times$ 1191       |
 |   A4    |       210 $\times$ 297       |       595 $\times$ 842       |
 
-[注][変換誤差]) PostScript系の単位は$pt$への変換時、単純な四捨五入ではないので上表は参考値
+[注][変換誤差]) PostScript系の単位は $pt$ への変換時、単純な四捨五入ではないので上表は参考値
 
 [変換誤差]: https://www.ddc.co.jp/words/archives/20090701114500.html#%E8%A3%9C%E8%B6%B31aPostScript%E3%81%AE%E5%8D%98%E4%BD%8D%E7%B3%BB%E3%81%AF%E3%83%9D%E3%82%A4%E3%83%B3%E3%83%88%E3%81%AA%E3%81%AE%E3%81%A701mm%E3%81%8B%E3%82%89%E3%81%AE%E5%A4%89%E6%8F%9B%E8%AA%A4%E5%B7%AE%E3%81%AB%E6%B3%A8%E6%84%8F
 
