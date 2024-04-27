@@ -10,13 +10,13 @@
 
     BoxLayout:
         orientation:'vertical'
-        spacing: 10
-        padding: 10
+        spacing : 10
+        padding : 10
 
         TextInput:
             id          : input_folder_path 
             font_size   : '16sp'
-            multiline   : 'False'
+            multiline   : False
             hint_text   : 'FOLDER PATH'
             size_hint_x : 1
 
@@ -24,26 +24,26 @@
             orientation:'horizontal'
             Label:
                 id:label_separate_vh
-                text : '用紙の縦・横を分けて結合'
+                text        : '用紙の縦・横を分けて結合'
                 size_hint_x : 0.3
             CheckBox:
                 id:check_separate_vh
-                group: 'marge'
-                active : True
+                group       : 'marge'
+                active      : True
                 size_hint_x : 0.1
 
             Label:
                 id:label_separate_vh
-                text : '用紙の縦・横を分けないで結合'
+                text        : '用紙の縦・横を分けないで結合'
                 size_hint_x : 0.3
             CheckBox:
                 id:check_no_separate_vh
-                group: 'marge'
+                group       : 'marge'
                 size_hint_x : 0.1
 
 
             Button:
                 text: 'Merge'
-                size_hint_x: 0.2
-                on_press: root.merge_pressed()
+                size_hint_x : 0.2
+                on_press    : root.merge_pressed()
 
