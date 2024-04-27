@@ -2,7 +2,7 @@
 
 ## PDFのサイズ
 
-[DTP][DTP]では $1inch = 72pt$、なので$1mm \fallingdotseq 2.83pt$、$1pt \fallingdotseq 0.35mm$
+[DTP][DTP]では $1inch = 72pt$
 
 $mm$ を $pt$ に換算するには以下の式で計算
 
@@ -30,7 +30,7 @@ $$
 
 ## 参考
 
-株式会社大塚商会 : [https://www.tanomail.com/dyn/sp/bf/tanokun-room/trivia/index23.html][たのめーる]
+株式会社大塚商会 : [https://www.tanomail.com/dyn/sp/bf/tanokun-room/trivia/index23.html][たのめーる]  
 吉田印刷所 : [https://www.ddc.co.jp/words/archives/20090701114500.html][吉田印刷所]
 
 [たのめーる]: https://www.tanomail.com/dyn/sp/bf/tanokun-room/trivia/index23.html
