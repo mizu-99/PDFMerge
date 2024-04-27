@@ -18,7 +18,7 @@ else:
     LabelBase.register(DEFAULT_FONT, "meiryo.ttc")
 
 TITLE = 'PDFMerge'
-VERSION = '0.2.0'
+VERSION = '0.2.3'
 
 class FileList:
     def __init__(self, directory):
