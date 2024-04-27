@@ -18,8 +18,8 @@
 スクリプトを直接実施する場合は以下の依存ライブラリのインストールが必要です。
 
 - Python 3
-- pypdf 4.2.0
-- kivy 2.3.0
+- [pypdf 4.2.0](https://github.com/py-pdf/pypdf)
+- [kivy 2.3.0](https://github.com/kivy/kivy)
 
 ## 注意事項
 
