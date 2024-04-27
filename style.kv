@@ -1,26 +1,3 @@
-# <Root>:
-#     BoxLayout:
-#         orientation: 'vertical'
-
-#         BoxLayout:
-#             orientation: 'horizontal'
-#             padding: 10
-
-#             TextInput:
-#                 id: textinput_search_no
-#                 font_size: '16sp'
-#                 hint_text: 'Type here'
-#                 size_hint: 0.89, 1
-
-#             Label:
-#                 id: label_dummy
-#                 size_hint: 0.01, 1
-
-#             Button:
-#                 id: buttono_01
-#                 text: 'Copy'
-#                 size_hint: 0.1, 1
-
 #:import C kivy.utils.get_color_from_hex
 
 <MyBoxLayout>:
@@ -68,6 +45,5 @@
             Button:
                 text: 'Merge'
                 size_hint_x: 0.2
-                # on_press: root.submit_pressed()
                 on_press: root.merge_pressed()
 
