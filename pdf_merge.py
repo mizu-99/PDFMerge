@@ -18,7 +18,7 @@ else:
     LabelBase.register(DEFAULT_FONT, "meiryo.ttc")
 
 TITLE = 'PDFMerge'
-VERSION = '0.2.3'
+VERSION = '0.2.4'
 
 class FileList:
     def __init__(self, directory):
@@ -291,9 +291,9 @@ def merge_pdfs(directory, merge_status):
         }
     
     if merge_status == True:
-        processor.merge_pdf(pdf_data)
-    else:
         processor.merge_pdf_hv(pdf_data)
+    else:
+        processor.merge_pdf(pdf_data)
     
     print("PDF files merged successfully!")
 
