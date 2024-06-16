@@ -1,6 +1,7 @@
 import os
-from pypdf import PdfMerger, PdfReader
+import threading
 import platform
+from pypdf import PdfMerger, PdfReader
 from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
 from kivy.lang import Builder
@@ -8,6 +9,7 @@ from kivy.core.window import Window
 from kivy.config import Config
 from kivy.core.text import LabelBase, DEFAULT_FONT  # フォント指定
 from kivy.resources import resource_add_path        # フォント指定
+from kivy.clock import Clock
 
 if platform.system() == 'Linux':
     resource_add_path("/usr/share/fonts/opentype/noto/")
@@ -18,7 +20,7 @@ else:
     LabelBase.register(DEFAULT_FONT, "meiryo.ttc")
 
 TITLE = 'PDFMerge'
-VERSION = '0.2.4'
+VERSION = '0.2.5'
 
 class FileList:
     def __init__(self, directory):
@@ -261,7 +263,7 @@ class PdfProcessor:
         if self.merges['error'].pages:
             self.merges['error'].write(os.path.join(self.directory, 'merged_error.pdf'))
 
-def merge_pdfs(directory, merge_status):
+def merge_pdfs(directory, merge_status, event):
     # 現在のディレクトリを取得
     work_dir = directory
     
@@ -297,6 +299,8 @@ def merge_pdfs(directory, merge_status):
     
     print("PDF files merged successfully!")
 
+    event.set() # スレッドの終了を通知
+
 class MyBoxLayout(BoxLayout):
     def submit_pressed(self):
         input_text = self.ids.input_folder_path.text
@@ -316,7 +320,22 @@ class MyBoxLayout(BoxLayout):
             merge_status = True
     
         if work_dir:
-            merge_pdfs(work_dir, merge_status)
+            self.ids.button_merge.disabled = True # 「Merge」ボタンを無効化
+            self.ids.button_merge.text = 'Running...'
+            print('Running')
+            event = threading.Event()
+            merge_thread = threading.Thread(target= merge_pdfs, args=(work_dir, merge_status, event, ))
+            merge_thread.start()
+            # merge_pdfs(work_dir, merge_status)
+            # スレッドが終了するのを待つ
+            def check_thread(dt):
+                if event.is_set():
+                    self.ids.button_merge.disabled = False # 「Merge」ボタンを無効化
+                    self.ids.button_merge.text = 'Merge'
+                    return False # スケジューリングを停止
+                return True # スケジューリングを継続
+        
+            Clock.schedule_interval(check_thread, 0.1) # 0.1秒ごとにスレッドの状態をチェック
         else:
             pass
 

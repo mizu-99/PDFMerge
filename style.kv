@@ -43,7 +43,8 @@
 
 
             Button:
-                text: 'Merge'
+                id          : button_merge
+                text        : 'Merge'
                 size_hint_x : 0.2
-                on_press    : root.merge_pressed()
-
+                disabled    : False
+                on_release    : root.merge_pressed()
