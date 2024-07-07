@@ -7,6 +7,6 @@ Kivy-Garden==0.1.5
 pkg_resources==0.0.0
 Pygments==2.17.2
 pypdf==4.2.0
-requests==2.31.0
+requests==2.32.2
 typing_extensions==4.11.0
 urllib3==2.2.1
