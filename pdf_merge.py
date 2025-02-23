@@ -19,7 +19,7 @@ else:
     LabelBase.register(DEFAULT_FONT, "meiryo.ttc")
 
 TITLE = 'PDFMerge'
-VERSION = '0.2.7'
+VERSION = '0.3.0'
 
 PDF_SIZES_MM = {
     'A0': (1189, 841), 'A1': (841, 594), 'A2': (594, 420),
@@ -126,8 +126,8 @@ class MyBoxLayout(BoxLayout):
 class MyApp(App):
     title = f'{TITLE} v{VERSION}'
     Builder.load_file('style.kv')
-    Window.size = (700, 100)
-    Window.minimum_width, Window.minimum_height = 700, 100
+    Window.size = (500, 130)
+    Window.minimum_width, Window.minimum_height = 500, 130
     Config.set('input', 'mouse', 'mouse,disable_multitouch')
     Config.set('kivy', 'exit_on_escape', '0')
     
