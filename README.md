@@ -2,10 +2,10 @@
 
 ![License-MIT](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)
 ![Python](https://custom-icon-badges.herokuapp.com/badge/Python-3572A5.svg?logo=Python&logoColor=white)
-![SQL](https://custom-icon-badges.herokuapp.com/badge/SQL-e38c00.svg?logo=SQL&logoColor=white)
 
 このスクリプトは、Python を使用して PDF ファイルをマージするものです。  
 指定されたディレクトリ内の PDF ファイルを結合し、用紙サイズに応じて横向きと縦向きの結合を別々に行うことができます。
+大量かつ、サイズの異なるPDFを印刷するようなシチュエーションに効果を発揮します。
 
 ## 機能
 
