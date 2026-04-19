@@ -25,7 +25,7 @@
         BoxLayout:
             orientation : 'horizontal'
             size_hint_x : 1
-            size_hint_y : 0.6
+            size_hint_y : 0.9
 
             BoxLayout:
                 orientation : 'vertical'
@@ -33,7 +33,7 @@
 
                 BoxLayout:
                     orientation : 'horizontal'
-                    size_hint_y : 0.5
+                    size_hint_y : 0.3
 
                     CheckBox:
                         id          : check_separate_vh
@@ -50,7 +50,7 @@
 
                 BoxLayout:
                     orientation : 'horizontal'
-                    size_hint_y : 0.5
+                    size_hint_y : 0.3
 
                     CheckBox:
                         id          : check_no_separate_vh
@@ -59,6 +59,22 @@
                     Label:
                         id          : label_separate_vh
                         text        : '用紙の縦・横を分けないで結合'
+                        size_hint_x : 0.8
+                        text_size   : self.size
+                        halign      : 'left'
+                        valign      : 'center'
+
+                BoxLayout:
+                    orientation : 'horizontal'
+                    size_hint_y : 0.3
+
+                    CheckBox:
+                        id          : check_all_merge_above_A3
+                        group       : 'marge'
+                        size_hint_x : 0.2
+                    Label:
+                        id          : label_all_merge_above_A3
+                        text        : 'A3以上を全結合(縦・横の加味無し)'
                         size_hint_x : 0.8
                         text_size   : self.size
                         halign      : 'left'
