@@ -1,88 +1,166 @@
 #:import C kivy.utils.get_color_from_hex
 
-<MyBoxLayout>:
+<RoundedButton@Button>:
+    # 1. デフォルトの背景（画像）を透明にする
+    background_color: (0, 0, 0, 0)
+    background_normal: ''
     canvas.before:
         Color:
-            rgba : C('#29506D')
+            # ボタンの色（RGBA）
+            # rgba: C('#737373') if self.state == 'normal' else C('#086cab')
+            rgba: C('#086cab') if self.state == 'normal' else C('#737373')
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            # 角の丸みを設定 (ピクセル単位)
+            radius: [10, ]
+
+<SpinnerOption>:
+    background_color: 0, 0, 0, 0
+    background_normal: ''
+    canvas.before:
+        Color:
+            rgba: C('#737373') # 選択肢の背景色
+        RoundedRectangle:
+            # pos: self.pos
+            # size: self.size
+            pos: self.x, self.y + 2
+            size: self.width, self.height - 10
+            radius: [10,]
+
+<CustomSpinner>:
+    orientation: 'horizontal'
+    size_hint_y: 1
+    # text: spinner.text
+    # values: spinner.values
+
+    Spinner:
+        id: spinner
+        option_cls: 'SpinnerOption'  # 上で定義した丸角デザインを適用
+        text: root.text
+        values: root.values
+        size_hint_x: 1 
+        on_text: root.text = self.text
+        # on_text: print(f"Selected: {self.text}") # 選択が変わった時に実行
+
+        # --- ここから角丸の設定 ---
+        background_color: 0, 0, 0, 0  # デフォルト背景を消す
+        background_normal: ''
+        
+        canvas.before:
+            Color:
+                # 通常時はクリック時はグレー、少し濃い青
+                rgba: C('#737373') if self.state == 'normal' else C('#086cab')
+            RoundedRectangle:
+                pos: self.pos
+                size: self.size
+                radius: [10, ] # Rの大きさ
+
+<MyBoxLayout>:
+    canvas.before:
+        Color: 
+            rgba: C('#29506D')
         Rectangle:
-            pos  : self.pos
-            size : self.size
-
+            pos: self.pos
+            size: self.size
+    
     BoxLayout:
-        orientation : 'vertical'
-        spacing     : 10
-        padding     : 10
-
-        TextInput:
-            id               : input_folder_path 
-            font_size        : '16sp'
-            multiline        : False
-            hint_text        : 'FOLDER PATH'
-            size_hint_x      : 1
-            size_hint_y      : 0.4
-            on_text_validate : root.merge_pressed()
+        orientation: 'vertical'
+        spacing: 10
+        padding: 10
 
         BoxLayout:
-            orientation : 'horizontal'
-            size_hint_x : 1
-            size_hint_y : 0.9
+            orientation: 'horizontal'
+            size_hint_x: 1
+            spacing: 10
 
-            BoxLayout:
-                orientation : 'vertical'
-                size_hint_x : 0.7
+            TextInput:
+                id: input_folder_path
+                font_size: '16sp'
+                multiline: False
+                hint_text: "Select or Paste folder path"
+                size_hint_x: 0.85
 
-                BoxLayout:
-                    orientation : 'horizontal'
-                    size_hint_y : 0.3
+            RoundedButton:
+                id: button_select_path
+                text: 'Select'
+                disabled: False
+                size_hint_x: 0.15
+                text: 'Select'
+                on_release: root.select_directory()
 
-                    CheckBox:
-                        id          : check_separate_vh
-                        group       : 'marge'
-                        active      : True
-                        size_hint_x : 0.2
-                    Label:
-                        id          : label_separate_vh
-                        text        : '用紙の縦・横を分けて結合'
-                        size_hint_x : 0.8
-                        text_size   : self.size
-                        halign      : 'left'
-                        valign      : 'center'
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint_x: 1
+            spacing: 10
 
-                BoxLayout:
-                    orientation : 'horizontal'
-                    size_hint_y : 0.3
+            CustomSpinner:
+                id: location_spinner_1
+                size_hint_x: 0.3
+                text: 'A4'
+                values: 'A4', 'A3', 'A2', 'A1', 'A0'
 
-                    CheckBox:
-                        id          : check_no_separate_vh
-                        group       : 'marge'
-                        size_hint_x : 0.2
-                    Label:
-                        id          : label_separate_vh
-                        text        : '用紙の縦・横を分けないで結合'
-                        size_hint_x : 0.8
-                        text_size   : self.size
-                        halign      : 'left'
-                        valign      : 'center'
+            Label:
+                size_hint_x: 0.2
+                text: 'から'
+                text_size: self.size
+                halign: 'center'
+                valign: 'center'
 
-                BoxLayout:
-                    orientation : 'horizontal'
-                    size_hint_y : 0.3
+            CustomSpinner:
+                id: location_spinner_2
+                size_hint_x: 0.3
+                text: 'A0'
+                values: 'A4', 'A3', 'A2', 'A1', 'A0'
 
-                    CheckBox:
-                        id          : check_all_merge_above_A3
-                        group       : 'marge'
-                        size_hint_x : 0.2
-                    Label:
-                        id          : label_all_merge_above_A3
-                        text        : 'A3以上を全結合(縦・横の加味無し)'
-                        size_hint_x : 0.8
-                        text_size   : self.size
-                        halign      : 'left'
-                        valign      : 'center'
+            Label:
+                size_hint_x: 0.2
+                text: 'のサイズを'
+                text_size: self.size
+                halign: 'center'
+                valign: 'center'
 
-            Button:
-                id          : button_merge
-                text        : 'Merge'
-                size_hint_x : 0.3
-                disabled    : False
-                on_release  : root.merge_pressed()
+        BoxLayout:
+            orientation: 'horizontal'
+            spacing: 10
+
+            CheckBox:
+                id: check_separate_vh
+                group: 'marge'
+                active: True
+                size_hint_x: 0.1
+            Label:
+                id: label_separate_vh
+                text: '用紙の縦・横を区別して'
+                size_hint_x: 0.9
+                text_size: self.size
+                halign: 'left'
+                valign: 'center'
+
+        BoxLayout:
+            orientation: 'horizontal'
+            spacing: 10
+
+            CheckBox:
+                id: check_no_separate_vh
+                group: 'marge'
+                size_hint_x: 0.1
+
+            Label:
+                id: label_no_separate_vh
+                text: '用紙の縦・横を区別しないで'
+                size_hint_x: 0.9
+                text_size: self.size
+                halign: 'left'
+                valign: 'center'
+
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint_x: 1
+            spacing: 10
+
+            RoundedButton:
+                id: button_merge
+                text: 'Merge'
+                disabled: False
+                on_release: root.merge_pressed()
